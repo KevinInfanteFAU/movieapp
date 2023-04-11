@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div style="margin:4%">
+    <h1>Movie api app</h1>
+    <label for="movieInput">Movie Name</label>
+    <input id="movieInput" type="text" name="movieName">
+    <button onclick="sendMovie()">Submit</button>
+    <br>
+    <br>
+    <div id="mydiv" name="mydiv"></div>
+    </div>
+
+    <script>
+        var apiKey = '<%=apiKey %>'
+        function sendMovie(){
+            var movieName = $("#movieInput").val();
+            $.ajax({
+                url: "https://api.themoviedb.org/3/search/movie?api_key="+apiKey+"&query="+movieName,
+                type: "get",
+                data: { 
+                    movieName: movieName
+                },
+                success: function(response) {
+                    if(response.total_results>0){
+                        var string = "";
+                        //$("#mydiv").text("Movie found");
+                        // response = JSON.stringify(response); 
+                        // response = JSON.parse(response);
+                        console.log(response.results[0]);
+                        const movie = response.results[0];
+                        string+="<h1>"+movie.title+"</h1>";
+                        string+="<p>Release Date: "+movie.release_date+"</p>"
+                        string+="<p>Rating: "+movie.vote_average+"</p>"
+                        string+="<p>"+movie.overview+ "</p>"
+                        $("#mydiv").html(string);
+                    }
+                    else{
+                        $("#mydiv").text("No movies found by that name");
+                    }
+                },
+                error: function(xhr) {
+                    $("#mydiv").text('error: ' + xhr);
+                }
+            })
+        }
+    </script>
+</body>
+</html>

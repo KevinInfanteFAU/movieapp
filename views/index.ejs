@@ -39,8 +39,11 @@
                         console.log(response.results[0]);
                         const movie = response.results[0];
                         string+="<h1>"+movie.title+"</h1>";
+                        console.log(movie.poster_path);
                         string+="<p>Release Date: "+movie.release_date+"</p>"
                         string+="<p>Rating: "+movie.vote_average+"</p>"
+                        string+='<img src=\"https://image.tmdb.org/t/p/original/'+movie.poster_path+'\" width=\"250\"alt=\"movie poster\">';
+                        string+="<br><br>"
                         string+="<p>"+movie.overview+ "</p>"
                         $("#mydiv").html(string);
                     }

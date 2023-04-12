@@ -21,11 +21,10 @@
     </div>
 
     <script>
-        var apiKey = '<%=apiKey %>'
         function sendMovie(){
             var movieName = $("#movieInput").val();
             $.ajax({
-                url: "https://api.themoviedb.org/3/search/movie?api_key="+apiKey+"&query="+movieName,
+                url: "/search/"+movieName,
                 type: "get",
                 data: { 
                     movieName: movieName
@@ -33,13 +32,9 @@
                 success: function(response) {
                     if(response.total_results>0){
                         var string = "";
-                        //$("#mydiv").text("Movie found");
-                        // response = JSON.stringify(response); 
-                        // response = JSON.parse(response);
                         console.log(response.results[0]);
                         const movie = response.results[0];
                         string+="<h1>"+movie.title+"</h1>";
-                        console.log(movie.poster_path);
                         string+="<p>Release Date: "+movie.release_date+"</p>"
                         string+="<p>Rating: "+movie.vote_average+"</p>"
                         string+='<img src=\"https://image.tmdb.org/t/p/original/'+movie.poster_path+'\" width=\"250\"alt=\"movie poster\">';
@@ -52,7 +47,8 @@
                     }
                 },
                 error: function(xhr) {
-                    $("#mydiv").text('error: ' + xhr);
+                    $("#mydiv").text('error: ' + xhr.message);
+                    console.dir(xhr);
                 }
             })
         }
